@@ -6,7 +6,22 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <TextBlock Text="Test" FontSize="20" ></TextBlock>
+    <Grid Background="DarkSlateGray">
+        <StackPanel Margin="70 20">
+            <StackPanel Height="200">
+                <TextBlock Text="Enter information" FontSize="20"></TextBlock>
+
+                <TextBox x:Name="txtboxIn" FontSize="20"></TextBox>
+                <Button Content="Save" FontSize="15" Click="Button_Click"></Button>
+
+            
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="Output:" FontSize="20"></TextBlock>
+                <TextBlock x:Name="txtboxOut" Text="Output here" FontSize="20"></TextBlock>
+            </StackPanel>
+        </StackPanel>
+        
+        
     </Grid>
 </Window>
