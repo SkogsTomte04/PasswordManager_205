@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Runtime.Intrinsics.Arm;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -8,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp1.scripts;
 
 namespace WpfApp1;
 
@@ -16,6 +18,7 @@ namespace WpfApp1;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private string masterpass = "";
     public MainWindow()
     {
         InitializeComponent();
@@ -24,10 +27,22 @@ public partial class MainWindow : Window
     private void Button_Click(object sender, RoutedEventArgs e)
     {
         string input = txtboxIn.Text;
+        bool passCheck = false;
+
+        HashService hash = new HashService();
+        input = hash.ComputetoHash(input);
+
+        if(masterpass.Length < 1)
+        {
+            masterpass = input;
+        }
+        else
+        {
+            passCheck = hash.CheckHash(input,masterpass);
+        }
 
 
-
-
+        HashCheck.Text = passCheck.ToString();
 
         txtboxOut.Text = input;
     }

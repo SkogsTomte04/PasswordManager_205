@@ -19,6 +19,7 @@
             <StackPanel>
                 <TextBlock Text="Output:" FontSize="20"></TextBlock>
                 <TextBlock x:Name="txtboxOut" Text="Output here" FontSize="20"></TextBlock>
+                <TextBlock x:Name="HashCheck" Text="Hash Status" FontSize="20" Margin="0 20 0 0"></TextBlock>
             </StackPanel>
         </StackPanel>
         
