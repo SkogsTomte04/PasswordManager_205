@@ -46,4 +46,10 @@ public partial class MainWindow : Window
 
         txtboxOut.Text = input;
     }
+
+    private void ButtonGenerate_Click(object sender, RoutedEventArgs e)
+    {
+        PasswordHandler password = new PasswordHandler();
+        PassOutput.Text = password.GenerateStrongPassword();
+    }
 }

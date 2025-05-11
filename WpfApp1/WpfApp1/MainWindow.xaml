@@ -8,7 +8,7 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid Background="DarkSlateGray">
         <StackPanel Margin="70 20">
-            <StackPanel Height="200">
+            <StackPanel Height="90">
                 <TextBlock Text="Enter information" FontSize="20"></TextBlock>
 
                 <TextBox x:Name="txtboxIn" FontSize="20"></TextBox>
@@ -16,10 +16,17 @@
 
             
             </StackPanel>
-            <StackPanel>
+            
+            <StackPanel Height="200">
                 <TextBlock Text="Output:" FontSize="20"></TextBlock>
                 <TextBlock x:Name="txtboxOut" Text="Output here" FontSize="20"></TextBlock>
                 <TextBlock x:Name="HashCheck" Text="Hash Status" FontSize="20" Margin="0 20 0 0"></TextBlock>
+            </StackPanel>
+            <StackPanel Height="70">
+                <TextBlock x:Name="PassOutput" Text="Password" FontSize="20"></TextBlock>
+                <Button Content="Generate" FontSize="15" Click="ButtonGenerate_Click"></Button>
+
+
             </StackPanel>
         </StackPanel>
         
