@@ -10,7 +10,7 @@ namespace WpfApp1.scripts
 {
     class HashService
     {
-        public string ComputetoHash(string str)
+        public string ComputetoHash(string str) // Add salt
         {
             using(SHA256 sha256Hash = SHA256.Create())
             {
