@@ -52,4 +52,17 @@ public partial class MainWindow : Window
         PasswordHandler password = new PasswordHandler();
         PassOutput.Text = password.GenerateStrongPassword();
     }
+
+    private void Hash_nav(object sender, RoutedEventArgs e)
+    {
+        PasswordCheck.Visibility = Visibility.Visible;
+        PasswordGen.Visibility = Visibility.Hidden;
+    }
+
+    private void Pass_nav(object sender, RoutedEventArgs e)
+    {
+        PasswordCheck.Visibility = Visibility.Hidden;
+        PasswordGen.Visibility = Visibility.Visible; ;
+
+    }
 }
