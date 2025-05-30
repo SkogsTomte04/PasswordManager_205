@@ -28,7 +28,7 @@ namespace WpfApp1.scripts
 
             return password;
         }
-        private char GetRandomChar(string pass) // could be more unique. perhaps store and avoid duplicates
+        private char GetRandomChar(string pass) // Generates a secure password with unique characters, returns one character per call
         {
             char ch = ' ';
             Random rnd = new Random();

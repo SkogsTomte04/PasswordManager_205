@@ -10,7 +10,7 @@ namespace WpfApp1.scripts
 {
     class HashService
     {
-        public string ComputetoHash(string str) // Add salt
+        public string ComputetoHash(string str) // Converts string to sha256 HASH. TO DO: Add salt
         {
             using(SHA256 sha256Hash = SHA256.Create())
             {
@@ -26,13 +26,13 @@ namespace WpfApp1.scripts
             
         }
 
-        public bool CheckHash(string newStr, string origin)
+        public bool CheckHash(string newStr, string origin) // compare hash values with eachother, returns true when both are equal.
         {
             bool check = false;
-            if(newStr.Length == origin.Length)
+            if(newStr.Length == origin.Length) // check to see if both hash values contain the same amount of characters
             {
                 int i = 0;
-                while((i < newStr.Length) && (newStr[i] == origin[i]))
+                while((i < newStr.Length) && (newStr[i] == origin[i])) // compare each character with eachother
                 {
                     i++;
                 }
