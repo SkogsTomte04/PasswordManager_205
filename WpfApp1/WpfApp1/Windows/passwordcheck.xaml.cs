@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfApp1.Windows
+namespace PWMProject
 {
     /// <summary>
-    /// Interaction logic for Navigator.xaml
+    /// Interaction logic for passwordcheck.xaml
     /// </summary>
-    public partial class Navigator : Window
+    public partial class passwordcheck : Page
     {
-        public Navigator()
+        public passwordcheck()
         {
             InitializeComponent();
         }

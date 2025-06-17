@@ -6,56 +6,39 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <DockPanel >
-            <StackPanel x:Name="Hamburger" Width="200" Background="Gray">
+    <Grid Margin="20">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="250">
 
-                <Button Height="30" 
-                    FontSize="20" 
-                    Background="Transparent" 
-                    BorderBrush="LightGray" 
-                    BorderThickness="0 0 0 1" Click="Hash_nav">
-                    Hash
-                </Button>
-                <Button 
-                Height="30" 
-                FontSize="20" 
-                Background="Transparent" 
-                BorderBrush="LightGray" 
-                BorderThickness="0 0 0 1"
-                Click="Pass_nav"
-                >
+            <TextBlock Text="205.2 Password Manager" 
+               FontSize="18" 
+               FontWeight="Bold" 
+               HorizontalAlignment="Center" 
+               Margin="0,0,0,20"/>
 
-                    Password
-                </Button>
+            <TextBlock Text="User ID" Margin="0,0,0,5"/>
+            <TextBox x:Name="UserIdTextBox" Height="25" Margin="0,0,0,15"/>
 
-            </StackPanel>
-            <Grid x:Name="Content" Background="DarkGray">
-                <StackPanel x:Name="PasswordCheck"
-                        Margin="20"
-                        Visibility="Visible"
-                        >
-                    <TextBlock Text="Password and credentials check" FontSize="20"></TextBlock>
-                    <TextBlock Text="Enter information" FontSize="20"></TextBlock>
-
-                    <TextBox x:Name="txtboxIn" FontSize="20"></TextBox>
-                    <Button Content="Save" FontSize="15" Click="Button_Click"></Button>
-                    <StackPanel>
-                        <TextBlock Text="Output:" FontSize="20"></TextBlock>
-                        <TextBlock x:Name="txtboxOut" Text="Output here" FontSize="20"></TextBlock>
-                        <TextBlock x:Name="HashCheck" Text="Hash Status" FontSize="20" Margin="0 20 0 0"></TextBlock>
-                    </StackPanel>
-
-
-                </StackPanel>
-
-                <StackPanel x:Name="PasswordGen" Margin="20" Visibility="Hidden">
-                    <TextBlock x:Name="PassOutput" Text="Password" FontSize="20"></TextBlock>
-                    <Button Content="Generate" FontSize="15" Click="ButtonGenerate_Click"></Button>
-                </StackPanel>
+            <TextBlock Text="Password" Margin="0,0,0,5"/>
+            <Grid>
+                <PasswordBox x:Name="PasswordBox" Height="25" Margin="0,0,20,0"/>
+                <Button Content="👁" 
+                Width="25" 
+                Height="25" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Center"
+                Margin="0,0,0,0"
+                ToolTip="Show Password"
+                IsEnabled="False"/>
             </Grid>
 
-        </DockPanel>
+            <Button Content="Login" 
+            Height="30" 
+            Width="80" 
+            Margin="0,20,0,0"
+            HorizontalAlignment="Center"
+            Background="#D3D3D3"
+            Foreground="Black"/>
 
+        </StackPanel>
     </Grid>
 </Window>
