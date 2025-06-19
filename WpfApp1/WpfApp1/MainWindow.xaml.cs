@@ -27,10 +27,11 @@ public partial class MainWindow : Window
 
     private void Login_btn_pressed(object sender, RoutedEventArgs e)
     {
+        //This is currently testing database handling, will work as a normal button once finished
         Debug.WriteLine("test");
         DataHandler handler = new DataHandler();
-        handler.AddUser("rand", "rand");
-
+        //handler.AddUser("skogstomte101", "Buster05");
+        handler.PrintAllUsers();
     }
 
 
