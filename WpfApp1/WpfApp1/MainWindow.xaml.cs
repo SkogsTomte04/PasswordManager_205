@@ -1,4 +1,5 @@
-﻿using System.Runtime.Intrinsics.Arm;
+﻿using System.Diagnostics;
+using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,45 +25,56 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
+    private void Login_btn_pressed(object sender, RoutedEventArgs e)
     {
-        string input = txtboxIn.Text;
-        bool passCheck = false;
+        Debug.WriteLine("test");
+        DataHandler handler = new DataHandler();
+        handler.AddUser("rand", "rand");
 
-        HashService hash = new HashService();
-        input = hash.ComputetoHash(input);
+    }
 
-        if(masterpass.Length < 1)
+
+
+    /*
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            masterpass = input;
-        }
-        else
+            string input = txtboxIn.Text;
+            bool passCheck = false;
+
+            HashService hash = new HashService();
+            input = hash.ComputetoHash(input);
+
+            if(masterpass.Length < 1)
+            {
+                masterpass = input;
+            }
+            else
+            {
+                passCheck = hash.CheckHash(input,masterpass);
+            }
+
+
+            HashCheck.Text = passCheck.ToString();
+
+            txtboxOut.Text = input;
+        }*/
+
+    /*    private void ButtonGenerate_Click(object sender, RoutedEventArgs e)
         {
-            passCheck = hash.CheckHash(input,masterpass);
+            PasswordHandler password = new PasswordHandler();
+            PassOutput.Text = password.GenerateStrongPassword();
         }
 
+        private void Hash_nav(object sender, RoutedEventArgs e)
+        {
+            PasswordCheck.Visibility = Visibility.Visible;
+            PasswordGen.Visibility = Visibility.Hidden;
+        }
 
-        HashCheck.Text = passCheck.ToString();
+        private void Pass_nav(object sender, RoutedEventArgs e)
+        {
+            PasswordCheck.Visibility = Visibility.Hidden;
+            PasswordGen.Visibility = Visibility.Visible; ;
 
-        txtboxOut.Text = input;
-    }
-
-    private void ButtonGenerate_Click(object sender, RoutedEventArgs e)
-    {
-        PasswordHandler password = new PasswordHandler();
-        PassOutput.Text = password.GenerateStrongPassword();
-    }
-
-    private void Hash_nav(object sender, RoutedEventArgs e)
-    {
-        PasswordCheck.Visibility = Visibility.Visible;
-        PasswordGen.Visibility = Visibility.Hidden;
-    }
-
-    private void Pass_nav(object sender, RoutedEventArgs e)
-    {
-        PasswordCheck.Visibility = Visibility.Hidden;
-        PasswordGen.Visibility = Visibility.Visible; ;
-
-    }
+        }*/
 }
