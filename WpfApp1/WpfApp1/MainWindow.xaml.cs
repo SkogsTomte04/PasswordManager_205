@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using PWMProject;
+using System.Diagnostics;
 using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Windows;
@@ -19,7 +20,8 @@ namespace WpfApp1;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private string masterpass = "";
+    private string muser = "";
+    private string mpass = "";
     public MainWindow()
     {
         InitializeComponent();
@@ -30,7 +32,32 @@ public partial class MainWindow : Window
         //This is currently testing database handling, will work as a normal button once finished
         DataHandler handler = new DataHandler();
         //handler.AddUser("skogstomte101", "Buster05"); // this adds user based on username and password
+        muser = UserIdTextBox.Text;
+        mpass = PasswordBox.Password;
+
+        //Debug_credentials(muser, mpass);
         handler.PrintAllUsers();
+
+        if(handler.LogInUser(muser, mpass))
+        {
+            Homepage homepage = new Homepage();
+            homepage.Show();
+        }
+        
+
+
+
+    }
+
+    private void Debug_credentials(string x, string y)
+    {
+        Debug.WriteLine("Username " + x);
+        Debug.WriteLine("Password " + y);
+    }
+
+    private string Validate_input(string str)
+    {
+        return str;
     }
 
 

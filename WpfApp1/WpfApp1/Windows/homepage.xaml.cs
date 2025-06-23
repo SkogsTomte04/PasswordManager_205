@@ -18,9 +18,9 @@ namespace PWMProject
     /// <summary>
     /// Interaction logic for homepage.xaml
     /// </summary>
-    public partial class homepage : Page
+    public partial class Homepage : Window
     {
-        public homepage()
+        public Homepage()
         {
             InitializeComponent();
         }

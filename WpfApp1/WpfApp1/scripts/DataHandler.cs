@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace WpfApp1.scripts
 {
@@ -41,7 +42,7 @@ namespace WpfApp1.scripts
                 }
                 catch (SqlException ex)
                 {
-                    Debug.WriteLine("is this the message you are looking for: " + ex.Message);
+                    Debug.WriteLine("Exception error: " + ex.Message);
                 }
                 catch (Exception ex)
                 {
@@ -53,6 +54,33 @@ namespace WpfApp1.scripts
 
 
         }
+        public bool LogInUser(string user, string pass)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+
+                string query = "SELECT COUNT(*) FROM Users WHERE MasterUsername = @username AND MasterPasswordHash = @passwordHash";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@username", user);
+                    cmd.Parameters.AddWithValue("@passwordHash", pass);
+
+                    int count = (int)cmd.ExecuteScalar();
+                    if (count > 0)
+                    {
+                        MessageBox.Show("Login successful!");
+                        // Navigate to main application window
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid username or password.");
+                        return false;
+                    }
+                }
+            }
+        }
         public void PrintAllUsers()
         {
             string query = "SELECT UserId, MasterUsername, MasterPasswordHash FROM Users";
@@ -62,10 +90,8 @@ namespace WpfApp1.scripts
             {
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
-                Debug.WriteLine("It could be working 111");
                 while (reader.Read())
                 {
-                    Debug.WriteLine("It could be working");
                     int id = reader.GetInt32(0);
                     string username = reader.GetString(1);
                     string passwordHash = reader.GetString(2);

@@ -18,7 +18,7 @@ namespace PWMProject
     /// <summary>
     /// Interaction logic for accountverify.xaml
     /// </summary>
-    public partial class accountverify : Page
+    public partial class accountverify : Window
     {
         public accountverify()
         {
