@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace WpfApp1.scripts
 {
-    class HashService
+    static class HashService
     {
-        public string ComputetoHash(string str) // Converts string to sha256 HASH. TO DO: Add salt
+        public static string ComputetoHash(string str) // Converts string to sha256 HASH. TO DO: Add salt
         {
             using(SHA256 sha256Hash = SHA256.Create())
             {
@@ -26,7 +26,7 @@ namespace WpfApp1.scripts
             
         }
 
-        public bool CheckHash(string newStr, string origin) // compare hash values with eachother, returns true when both are equal.
+        public static bool CheckHash(string newStr, string origin) // compare hash values with eachother, returns true when both are equal.
         {
             bool check = false;
             if(newStr.Length == origin.Length) // check to see if both hash values contain the same amount of characters
@@ -41,7 +41,7 @@ namespace WpfApp1.scripts
                     check = true;
                 }
             }
-            Console.WriteLine("TESTING WRITELINE");
+           
             return check;
         }
     }

@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WpfApp1.scripts;
+using WpfApp1.Windows;
 
 namespace WpfApp1;
 
@@ -38,14 +39,26 @@ public partial class MainWindow : Window
         //Debug_credentials(muser, mpass);
         handler.PrintAllUsers();
 
-        if(handler.LogInUser(muser, mpass))
+        string[] userCredentials = handler.LogInUser(muser, mpass);
+
+        if(userCredentials != null)
         {
-            Homepage homepage = new Homepage();
+            Homepage homepage = new Homepage(userCredentials);
             homepage.Show();
+            this.Close();
         }
+        
         
 
 
+    }
+
+    private void NewUser_btn_clicked(object sender, RoutedEventArgs e)
+    {
+        Create_User create_User = new Create_User();
+        create_User.Show();
+
+        this.Close();
 
     }
 

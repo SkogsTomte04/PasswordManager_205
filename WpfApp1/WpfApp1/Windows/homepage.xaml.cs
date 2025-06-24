@@ -20,9 +20,25 @@ namespace PWMProject
     /// </summary>
     public partial class Homepage : Window
     {
-        public Homepage()
+        private string[] _usercredentials;
+
+        public Homepage(string[] usercredentials)
         {
             InitializeComponent();
+            _usercredentials = usercredentials;
+        }
+
+        //Get credentals from user and display on homepage
+        private void GetCredentials()
+        {
+
+        }
+
+
+        //Add new credential to user
+        private void NewCredential_btn_pressed(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

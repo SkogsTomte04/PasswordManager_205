@@ -54,19 +54,43 @@ namespace WpfApp1.scripts
 
 
         }
-        public bool LogInUser(string user, string pass)
+        public string[] LogInUser(string user, string pass)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
 
-                string query = "SELECT COUNT(*) FROM Users WHERE MasterUsername = @username AND MasterPasswordHash = @passwordHash";
+                string query = "SELECT MasterPasswordHash, UserId FROM Users WHERE MasterUsername = @username";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
+                    string userID = "";
+                    string masterPassHash = "";
+                    string passtoHash = "";
                     cmd.Parameters.AddWithValue("@username", user);
-                    cmd.Parameters.AddWithValue("@passwordHash", pass);
 
-                    int count = (int)cmd.ExecuteScalar();
+
+                    using var reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        userID = reader.GetString(1);
+                        masterPassHash = reader.GetString(0);
+                        passtoHash = HashService.ComputetoHash(pass);
+                        if (HashService.CheckHash(passtoHash, masterPassHash))
+                        {
+                            MessageBox.Show("Password passed the hash test");
+                            conn.Close();
+                            return [user, userID];
+                        }
+                        else
+                        {
+                            MessageBox.Show("Password did NOT pass the hash test");
+                            conn.Close();
+                            return null;
+                        }
+                    }
+                    else { conn.Close(); MessageBox.Show("SQL Reader Failed"); return null; }
+
+                    /*int count = (int)cmd.ExecuteScalar();
                     if (count > 0)
                     {
                         MessageBox.Show("Login successful!");
@@ -77,7 +101,7 @@ namespace WpfApp1.scripts
                     {
                         MessageBox.Show("Invalid username or password.");
                         return false;
-                    }
+                    }*/
                 }
             }
         }
