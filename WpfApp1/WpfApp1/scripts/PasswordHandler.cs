@@ -13,7 +13,7 @@ namespace WpfApp1.scripts
         private const string numbers = "0123456789";
         private const string characters = """!@#$%^&*()_-+={}[|]:;\"'<>.,/?~""";
         private const int passwordLeangth = 12;
-        public string GenerateStrongPassword()
+        public static string GenerateStrongPassword()
         {
             //Password checklist:
             //needs to be at least 12 ch long
@@ -21,14 +21,14 @@ namespace WpfApp1.scripts
             //be unique
             string password = "";
 
-            for(int i = 0; i < 12; i++)
+            for(int i = 0; i < passwordLeangth; i++)
             {
                 password += GetRandomChar(password);
             }
 
             return password;
         }
-        private char GetRandomChar(string pass) // Generates a secure password with unique characters, returns one character per call
+        private static char GetRandomChar(string pass) // Generates a secure password with unique characters, returns one character per call
         {
             char ch = ' ';
             Random rnd = new Random();

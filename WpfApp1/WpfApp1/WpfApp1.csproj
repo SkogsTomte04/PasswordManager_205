@@ -9,6 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\copy-alt.png" />
+    <None Remove="Assets\eye.png" />
+    <None Remove="Assets\instagram.png" />
+    <None Remove="Assets\search.png" />
+    <None Remove="Assets\share.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\copy-alt.png" />
+    <Content Include="Assets\eye.png" />
+    <Content Include="Assets\instagram.png" />
+    <Content Include="Assets\search.png" />
+    <Content Include="Assets\share.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
   </ItemGroup>
 

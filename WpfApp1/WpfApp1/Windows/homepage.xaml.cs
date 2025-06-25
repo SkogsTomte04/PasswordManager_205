@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp1.Windows;
 
 namespace PWMProject
 {
@@ -42,7 +43,9 @@ namespace PWMProject
         //Add new credential to user
         private void NewCredential_btn_pressed(object sender, RoutedEventArgs e)
         {
-            
+            MessageBox.Show("This is the redirect");
+            NewCredential newCredential = new NewCredential();
+            newCredential.Show();
         }
 
         private void UserIcon_Click(object sender, RoutedEventArgs e)

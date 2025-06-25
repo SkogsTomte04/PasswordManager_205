@@ -70,7 +70,7 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
-                <Button x:Name="NewCredential" Click="NewCredential_btn_pressed" Content="+"></Button>
+                <Button x:Name="NewCredentialButton" Click="NewCredential_btn_pressed" Content="+"></Button>
 
             </DockPanel>
 
