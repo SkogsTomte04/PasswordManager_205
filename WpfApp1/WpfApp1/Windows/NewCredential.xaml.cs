@@ -25,9 +25,13 @@ namespace WpfApp1.Windows
         private string _username = "";
         private string _password = "";
         private string _note = "";
-        public NewCredential()
+        private string[] values = new string[5];
+
+        ActiveUser _user;
+        public NewCredential(ActiveUser user)
         {
             InitializeComponent();
+            this._user = user;
         }
 
         private void GeneratePassButton_Click(object sender, RoutedEventArgs e)
@@ -44,11 +48,25 @@ namespace WpfApp1.Windows
         private void save_button_Click(object sender, RoutedEventArgs e)
         {
             // save info to database
+            GetInputText();
+            
+            values = new string[5] { _domain, _email, _username, _password, _note };
+
+            DataHandler dataHandler = new DataHandler();
+            dataHandler.AddCredentials(_user, values);
+
+            // send this to datahandler 
+
+
+        }
+        private void GetInputText()
+        {
             _domain = domainTxtBox.Text;
             _email = emailTxtBox.Text;
             _username = UsernameTextBox.Text;
             _password = PasswordBox.Password;
-            _note = noteTx
+            _note = noteTxtbox.Text;
+
         }
 
         private void cancel_button_Click(object sender, RoutedEventArgs e)

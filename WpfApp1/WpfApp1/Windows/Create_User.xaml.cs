@@ -41,17 +41,20 @@ namespace WpfApp1.Windows
             
             if(Passwordcheck(username, password, passwordconfirmation))
             {
+                // generate keys and salt for encryption and decryption
+                KeyLoader.FirstTimeSetup(username, password);
+
                 // hash the password
                 string hash = HashService.ComputetoHash(password);
                 handler.AddUser(username, hash); // this adds user based on username and password
-                //Debug_credentials(muser, mpass);
+                
                 handler.PrintAllUsers();
 
-                string[] userCredentials = handler.LogInUser(username, password);
+                ActiveUser user = handler.LogInUser(username, password);
 
-                if (userCredentials != null)
+                if (user != null)
                 {
-                    Homepage homepage = new Homepage(userCredentials);
+                    Homepage homepage = new Homepage(user);
                     homepage.Show();
                     this.Close();
                 }

@@ -39,11 +39,11 @@ public partial class MainWindow : Window
         //Debug_credentials(muser, mpass);
         handler.PrintAllUsers();
 
-        string[] userCredentials = handler.LogInUser(muser, mpass);
+        ActiveUser activeUser = handler.LogInUser(muser, mpass);
 
-        if(userCredentials != null)
+        if(activeUser != null)
         {
-            Homepage homepage = new Homepage(userCredentials);
+            Homepage homepage = new Homepage(activeUser);
             homepage.Show();
             this.Close();
         }

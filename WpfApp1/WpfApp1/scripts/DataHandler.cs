@@ -73,14 +73,66 @@ namespace WpfApp1.scripts
                 {
                     Console.WriteLine("Error inserting user: " + ex.Message);
                 }
+                conn.Close();
             }
 
 
 
 
         }
-        public string[] LogInUser(string user, string pass)
+        public void AddCredentials(ActiveUser User, string[] credentials )
         {
+            // credentials = { _domain, _email, _username, _password, _note }
+            DateTime date = DateTime.Now;
+
+            // Encrypt the password
+            string encrypted_password = KeyLoader.Encrypt(System.Text.Encoding.UTF8.GetBytes(credentials[3]), User.GetDataKey());
+
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                string query = @"INSERT INTO Credentials
+                        (UserId, ServiceName, Email, Username, EncryptedPassword, Notes, DateCreated, DateUpdated)
+                        VALUES
+                        (@UserId, @ServiceName, @Email, @Username, @EncryptedPassword, @Notes, @DateCreated, @DateUpdated)";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@UserId", User._userId);
+                    cmd.Parameters.AddWithValue("@ServiceName", credentials[0]);
+                    cmd.Parameters.AddWithValue("@Email", credentials[1]);
+                    cmd.Parameters.AddWithValue("@Username", credentials[2]);
+                    cmd.Parameters.AddWithValue("@EncryptedPassword", encrypted_password); // Already encrypted
+                    cmd.Parameters.AddWithValue("@Notes", credentials[4]);
+                    cmd.Parameters.AddWithValue("@DateCreated", date);
+                    cmd.Parameters.AddWithValue("@DateUpdated", date);
+
+                    try
+                    {
+                        conn.Open();
+                        int rows = cmd.ExecuteNonQuery();
+                        if (rows > 0)
+                        {
+                            MessageBox.Show("Credential added successfully.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("No rows inserted");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: " + ex.Message);
+                    }
+                    conn.Close();
+                    PrintAllPasswords();
+                }
+            }
+
+        }
+        public ActiveUser LogInUser(string user, string pass)
+        {
+            
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
@@ -90,7 +142,7 @@ namespace WpfApp1.scripts
                 {
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        string userID = "";
+                        int userID = 0;
                         string masterPassHash = "";
                         string passtoHash = "";
                         cmd.Parameters.AddWithValue("@username", user);
@@ -99,14 +151,19 @@ namespace WpfApp1.scripts
                         using var reader = cmd.ExecuteReader();
                         if (reader.Read())
                         {
-                            userID = reader.GetInt32(1).ToString();
+                            userID = reader.GetInt32(1);
                             masterPassHash = reader.GetString(0);
                             passtoHash = HashService.ComputetoHash(pass);
                             if (HashService.CheckHash(passtoHash, masterPassHash))
                             {
+                                if (!KeyLoader.IsUserInitialized(user))
+                                {
+                                    KeyLoader.FirstTimeSetup(user, pass);
+                                }
                                 MessageBox.Show("Password passed the hash test");
                                 conn.Close();
-                                return [user, userID];
+                                ActiveUser activeUser = new ActiveUser(userID, user, pass);
+                                return activeUser;
                             }
                             else
                             {
@@ -186,6 +243,25 @@ namespace WpfApp1.scripts
                     string passwordHash = reader.GetString(2);
 
                     Debug.WriteLine($"UserId: {id}, Username: {username}, Hash: {passwordHash}");
+                }
+            }
+        }
+        public void PrintAllPasswords()
+        {
+            string query = "SELECT ServiceName, UserId, EncryptedPassword FROM Credentials";
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    int id = reader.GetInt32(1);
+                    string username = reader.GetString(0);
+                    string passwordHash = reader.GetString(2);
+
+                    MessageBox.Show($"UserId: {id}, \nServiceName: {username},\nEncrypted: {passwordHash}");
                 }
             }
         }

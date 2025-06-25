@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp1.scripts;
 using WpfApp1.Windows;
 
 namespace PWMProject
@@ -22,12 +23,12 @@ namespace PWMProject
     public partial class Homepage : Window
     {
         // stored as [username, id]
-        private string[] _usercredentials;
+        private ActiveUser _user;
 
-        public Homepage(string[] usercredentials)
+        public Homepage(ActiveUser user)
         {
             InitializeComponent();
-            _usercredentials = usercredentials;
+            this._user = user;
 
             ApplyCredentials();
         }
@@ -35,8 +36,8 @@ namespace PWMProject
         //Get credentals from user and display on homepage
         private void ApplyCredentials()
         {
-            User_Name_Txt.Text = $"Username: {_usercredentials[0]}";
-            User_Email_Txt.Text = $"Email: {_usercredentials[1]}.gmail.com";
+            User_Name_Txt.Text = $"Username: {_user._username}";
+            User_Email_Txt.Text = $"Email: {_user._userId}.gmail.com";
         }
 
 
@@ -44,7 +45,7 @@ namespace PWMProject
         private void NewCredential_btn_pressed(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("This is the redirect");
-            NewCredential newCredential = new NewCredential();
+            NewCredential newCredential = new NewCredential(_user);
             newCredential.Show();
         }
 
