@@ -11,8 +11,27 @@
 
         <DockPanel Background="#F5F5F5" Height="50" VerticalAlignment="Top">
             <Button Content="←" DockPanel.Dock="Left" Width="50" Background="Transparent" BorderThickness="0"/>
-            <Button Content="👤" DockPanel.Dock="Right" Width="50" Background="Transparent" BorderThickness="0"/>
-            <TextBlock Text="Password Manager" FontSize="16" FontWeight="Bold" IsEnabled="False" DockPanel.Dock="Right" Width="144" Height="24"/>
+            <Button Content="👤" Click="UserIcon_Click" DockPanel.Dock="Right" Width="50" Background="Transparent" BorderThickness="0" x:Name="UserIcon"/>
+            <TextBlock Text="Password Manager" FontSize="16" FontWeight="Bold" IsEnabled="False" DockPanel.Dock="Top" Width="144" Height="24"/>
+            <Popup x:Name="UserPopup"
+               PlacementTarget="{Binding ElementName=UserIcon}"
+               Placement="Bottom"
+               StaysOpen="False"
+               AllowsTransparency="True"
+               PopupAnimation="Fade">
+                <Border Background="White"
+                    CornerRadius="8"
+                    Padding="10"
+                    BorderBrush="Gray"
+                    BorderThickness="1"
+                    Width="200">
+                    <StackPanel>
+                        <TextBlock x:Name="User_Name_Txt" Text="User: user" FontWeight="Bold"/>
+                        <TextBlock x:Name="User_Email_Txt" Text="Email: template@example.com" Margin="0,0,0,10"/>
+                        <Button Content="Logout" Click="Logout_Click"/>
+                    </StackPanel>
+                </Border>
+            </Popup>
         </DockPanel>
 
         <StackPanel Margin="20,60,20,20" RenderTransformOrigin="0.499,0.669">

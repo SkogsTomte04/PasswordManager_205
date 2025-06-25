@@ -17,5 +17,11 @@ namespace WpfApp1.Windows
     /// <summary>
     /// Interaction logic for NewCredential.xaml
     /// </summary>
-    
+    public partial class NewCredential : Window
+    {
+        public NewCredential()
+        {
+            InitializeComponent();
+        }
+    }
 }
