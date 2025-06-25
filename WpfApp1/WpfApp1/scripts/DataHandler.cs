@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
@@ -14,15 +15,39 @@ namespace WpfApp1.scripts
 
     internal class DataHandler
     {
-        private string connStr = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database1.mdf;Integrated Security=True;";
+        string dbPath = "";
 
+        string connStr = "";
+
+
+
+        public DataHandler()
+        {
+            string appDataPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "PasswordManager");
+
+            dbPath = Path.Combine(appDataPath, "Database1.mdf");
+
+            connStr = $@"Data Source=(LocalDB)\MSSQLLocalDB;
+            AttachDbFilename={dbPath};
+            Integrated Security=True;
+            Database=PasswordManagerDB;";
+
+            if (!Directory.Exists(appDataPath))
+                Directory.CreateDirectory(appDataPath);
+
+            if (!File.Exists(dbPath))
+            {
+                // Copy from app folder 
+                File.Copy("Data\\Database1.mdf", dbPath, overwrite: false);
+                MessageBox.Show("File does not exist, creating...");
+            }
+        }
         public void AddUser(string username,string password)
         {
             string query = "INSERT INTO Users (MasterUsername, MasterPasswordHash) VALUES (@Username, @PasswordHash)";
 
-            /*Random rand = new Random();
-
-            int userId = rand.Next(100, 999);*/
 
             using (SqlConnection conn = new SqlConnection(connStr))
             using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -61,34 +86,37 @@ namespace WpfApp1.scripts
                 conn.Open();
 
                 string query = "SELECT MasterPasswordHash, UserId FROM Users WHERE MasterUsername = @username";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                try
                 {
-                    string userID = "";
-                    string masterPassHash = "";
-                    string passtoHash = "";
-                    cmd.Parameters.AddWithValue("@username", user);
-
-
-                    using var reader = cmd.ExecuteReader();
-                    if (reader.Read())
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        userID = reader.GetString(1);
-                        masterPassHash = reader.GetString(0);
-                        passtoHash = HashService.ComputetoHash(pass);
-                        if (HashService.CheckHash(passtoHash, masterPassHash))
+                        string userID = "";
+                        string masterPassHash = "";
+                        string passtoHash = "";
+                        cmd.Parameters.AddWithValue("@username", user);
+
+
+                        using var reader = cmd.ExecuteReader();
+                        if (reader.Read())
                         {
-                            MessageBox.Show("Password passed the hash test");
-                            conn.Close();
-                            return [user, userID];
+                            userID = reader.GetInt32(1).ToString();
+                            masterPassHash = reader.GetString(0);
+                            passtoHash = HashService.ComputetoHash(pass);
+                            if (HashService.CheckHash(passtoHash, masterPassHash))
+                            {
+                                MessageBox.Show("Password passed the hash test");
+                                conn.Close();
+                                return [user, userID];
+                            }
+                            else
+                            {
+                                MessageBox.Show("Password did NOT pass the hash test");
+                                conn.Close();
+                                return null;
+                            }
                         }
-                        else
-                        {
-                            MessageBox.Show("Password did NOT pass the hash test");
-                            conn.Close();
-                            return null;
-                        }
+                        else { conn.Close(); MessageBox.Show("SQL READER ERROR"); return null; }
                     }
-                    else { conn.Close(); MessageBox.Show("SQL Reader Failed"); return null; }
 
                     /*int count = (int)cmd.ExecuteScalar();
                     if (count > 0)
@@ -103,6 +131,43 @@ namespace WpfApp1.scripts
                         return false;
                     }*/
                 }
+                catch (Exception ex) { MessageBox.Show(ex.Message); }
+                return null;
+            }
+        }
+        public void testDB()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand("SELECT * FROM Users WHERE Username = @Username", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Username", "skogstomte101");
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    string passwordHash = reader["PasswordHash"].ToString();
+                                    // Use the data
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("No rows found — check your query or data.");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
             }
         }
         public void PrintAllUsers()
@@ -124,6 +189,7 @@ namespace WpfApp1.scripts
                 }
             }
         }
+        
 
     }
 }

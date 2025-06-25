@@ -2,6 +2,7 @@
 using System.Data;
 using System.Windows;
 using System.IO;
+using WpfApp1.scripts;
 
 namespace WpfApp1;
 
@@ -17,6 +18,7 @@ public partial class App : Application
         // Set DataDirectory to your project root + \Data
         string dataDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data");
         AppDomain.CurrentDomain.SetData("DataDirectory", dataDir);
+
     }
 }
 
