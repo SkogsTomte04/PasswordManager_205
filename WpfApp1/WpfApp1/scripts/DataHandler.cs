@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -44,6 +45,29 @@ namespace WpfApp1.scripts
                 MessageBox.Show("File does not exist, creating...");
             }
         }
+        public void AddEmailColumnToCredentials()
+        {
+
+            string query = @"
+        ALTER TABLE credentials
+        ADD Email NVARCHAR(255);";
+
+            using (SqlConnection connection = new SqlConnection(connStr))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    Console.WriteLine("Email column added successfully.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error adding Email column: " + ex.Message);
+                }
+                connection.Close();
+            }
+        }
         public void AddUser(string username,string password)
         {
             string query = "INSERT INTO Users (MasterUsername, MasterPasswordHash) VALUES (@Username, @PasswordHash)";
@@ -80,8 +104,10 @@ namespace WpfApp1.scripts
 
 
         }
+
         public void AddCredentials(ActiveUser User, string[] credentials )
         {
+            //AddEmailColumnToCredentials();
             // credentials = { _domain, _email, _username, _password, _note }
             DateTime date = DateTime.Now;
 
@@ -125,10 +151,48 @@ namespace WpfApp1.scripts
                         MessageBox.Show("Error: " + ex.Message);
                     }
                     conn.Close();
-                    PrintAllPasswords();
+                    
                 }
             }
 
+        }
+        public List<Credential> GetCredentials(ActiveUser user)
+        {
+            var credentials = new List<Credential>();
+
+            string query = @"
+            SELECT Id, ServiceName, Username, EncryptedPassword, Notes, DateCreated, DateUpdated, Email
+            FROM credentials
+            WHERE UserID = @UserID";
+
+            using (SqlConnection connection = new SqlConnection(connStr))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@UserID", user._userId);
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var credential = new Credential
+                        {
+                            Id = reader.GetInt32(0),
+                            ServiceName = reader.GetString(1),
+                            Username = reader.GetString(2),
+                            EncryptedPassword = reader.GetString(3),
+                            Notes = reader.IsDBNull(4) ? null : reader.GetString(4),
+                            DateCreated = reader.GetDateTime(5),
+                            DateUpdated = reader.GetDateTime(6),
+                            Email = reader.IsDBNull(7) ? null : reader.GetString(7)
+                        };
+
+                        credentials.Add(credential);
+                    }
+                }
+            }
+
+            return credentials;
         }
         public ActiveUser LogInUser(string user, string pass)
         {
@@ -160,14 +224,12 @@ namespace WpfApp1.scripts
                                 {
                                     KeyLoader.FirstTimeSetup(user, pass);
                                 }
-                                MessageBox.Show("Password passed the hash test");
                                 conn.Close();
                                 ActiveUser activeUser = new ActiveUser(userID, user, pass);
                                 return activeUser;
                             }
                             else
                             {
-                                MessageBox.Show("Password did NOT pass the hash test");
                                 conn.Close();
                                 return null;
                             }

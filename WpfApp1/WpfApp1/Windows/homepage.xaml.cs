@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp1.Controls;
 using WpfApp1.scripts;
 using WpfApp1.Windows;
 
@@ -31,6 +32,7 @@ namespace PWMProject
             this._user = user;
 
             ApplyCredentials();
+            GetCredentials();
         }
 
         //Get credentals from user and display on homepage
@@ -44,11 +46,25 @@ namespace PWMProject
         //Add new credential to user
         private void NewCredential_btn_pressed(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("This is the redirect");
             NewCredential newCredential = new NewCredential(_user);
-            newCredential.Show();
+            newCredential.ShowDialog();
+            GetCredentials();
         }
 
+        private void GetCredentials()
+        {
+            DataHandler handler = new DataHandler();
+            List<Credential> credentials = handler.GetCredentials(_user);
+
+            CredentialsContainer.Children.Clear();
+
+            foreach (Credential credential in credentials)
+            {
+                AccountElement accountElement = new AccountElement(credential, _user);
+                CredentialsContainer.Children.Add(accountElement);
+                
+            }
+        }
         private void UserIcon_Click(object sender, RoutedEventArgs e)
         {
             UserPopup.IsOpen = !UserPopup.IsOpen;
@@ -56,6 +72,13 @@ namespace PWMProject
         private void Logout_Click(object sender, RoutedEventArgs e)
         {
             UserPopup.IsOpen = !UserPopup.IsOpen;
+        }
+
+        private void ImportPasswords_button_Click(object sender, RoutedEventArgs e)
+        {
+            ImportCSV importCSV = new ImportCSV(_user);
+            importCSV.ShowDialog();
+            GetCredentials();
         }
     }
 }

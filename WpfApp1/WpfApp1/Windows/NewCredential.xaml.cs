@@ -57,7 +57,7 @@ namespace WpfApp1.Windows
 
             // send this to datahandler 
 
-
+            this.Close();
         }
         private void GetInputText()
         {

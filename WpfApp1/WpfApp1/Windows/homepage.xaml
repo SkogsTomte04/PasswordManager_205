@@ -5,9 +5,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PWMProject"
       mc:Ignorable="d" d:DesignWidth="500"
-      Title="homepage" Height="449">
+      Title="homepage" Height="500" Width="500">
 
     <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
 
         <DockPanel Background="#F5F5F5" Height="50" VerticalAlignment="Top">
             <Button Content="←" DockPanel.Dock="Left" Width="50" Background="Transparent" BorderThickness="0"/>
@@ -70,12 +74,12 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
-                <Button x:Name="NewCredentialButton" Click="NewCredential_btn_pressed" Content="+"></Button>
+                <Button x:Name="NewCredentialButton" Click="NewCredential_btn_pressed" Content="+" Width="20"></Button>
 
             </DockPanel>
 
 
-            <UniformGrid Columns="2" Rows="4" Margin="0,0,0,10" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+            <UniformGrid x:Name="CredentialsContainer" Columns="2" Rows="4" Margin="0,0,0,10" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                 <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Image Source="/Assets/instagram.png" Width="15" Height="15"  Margin="0,0,15,0"/>
@@ -95,5 +99,8 @@
 
             </UniformGrid>
         </StackPanel>
+        <Button Grid.Row="1" Content="Import CSV" Width="100" Height="40" Margin="20" x:Name="ImportPasswords_button" Click="ImportPasswords_button_Click"/>
+
+
     </Grid>
 </Window>
