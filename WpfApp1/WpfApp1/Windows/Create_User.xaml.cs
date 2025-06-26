@@ -41,6 +41,12 @@ namespace WpfApp1.Windows
             
             if(Passwordcheck(username, password, passwordconfirmation))
             {
+                //check if user exists
+                if (handler.UserExists(username))
+                {
+                    MessageBox.Show($"User \"{username}\" already exists");
+                    return;
+                }
                 // generate keys and salt for encryption and decryption
                 KeyLoader.FirstTimeSetup(username, password);
 
@@ -89,6 +95,9 @@ namespace WpfApp1.Windows
             }
             else
             {
+                valid = false;
+                PasswordBox.Password = "";
+                ConfirmPasswordBox.Password = "";
                 MessageBox.Show("Password Does not match with confirmation password");
             }
 

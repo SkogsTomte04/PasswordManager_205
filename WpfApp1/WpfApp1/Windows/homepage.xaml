@@ -43,7 +43,7 @@
                 <StackPanel>
                     <TextBlock Text="Password Checkpoint" FontWeight="Bold" FontSize="14" Margin="0,0,0,5"/>
                     <TextBlock Text="Check your saved password to strengthen your apps security" FontSize="12" Foreground="Gray"/>
-                    <Button Content="Go to Checkpoint" HorizontalAlignment="Right" Margin="0,10,0,0" Foreground="Blue" Background="Transparent" BorderThickness="0"/>
+                    <Button Content="Go to Checkpoint" HorizontalAlignment="Right" Margin="0,10,0,0" Foreground="Blue" Background="Transparent" BorderThickness="0" Click="Checkpoint_btn"/>
                 </StackPanel>
             </Border>
 
@@ -60,46 +60,36 @@
                 BorderBrush="Transparent"
                 Background="Transparent"
                 Padding="0"
+                TextChanged="SearchBox_TextChanged"
                 Width="150">
-                    <TextBox.Style>
-                        <Style TargetType="TextBox">
-                            <Setter Property="Foreground" Value="Gray"/>
-                            <Setter Property="Text" Value="Search app"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsKeyboardFocused" Value="True">
-                                    <Setter Property="Foreground" Value="Black"/>
-                                    <Setter Property="Text" Value=""/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
+                    
                 </TextBox>
                 <Button x:Name="NewCredentialButton" Click="NewCredential_btn_pressed" Content="+" Width="20"></Button>
 
             </DockPanel>
 
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Height="200">
+                <UniformGrid x:Name="CredentialsContainer" Columns="2" Rows="4" HorizontalAlignment="Stretch" VerticalAlignment="Top">
 
-            <UniformGrid x:Name="CredentialsContainer" Columns="2" Rows="4" Margin="0,0,0,10" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Image Source="/Assets/instagram.png" Width="15" Height="15"  Margin="0,0,15,0"/>
-                        <TextBlock Text="Instagram.com" FontSize="14" Width="94"/>
-                        <TextBlock Text="➔" FontSize="14" HorizontalAlignment="Right" Margin="40,0,0,0"/>
-                    </StackPanel>
-                </Border>
-                
 
-                <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5"/>
-                <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5"/>
-                <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5"/>
-                <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5"/>
-                <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5"/>
-                <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5"/>
-                <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5"/>
 
-            </UniformGrid>
+                    <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5"/>
+                    <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5"/>
+                    <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5"/>
+                    <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5"/>
+                    <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5"/>
+                    <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5"/>
+                    <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5"/>
+
+                </UniformGrid>
+            </ScrollViewer>
+            
         </StackPanel>
-        <Button Grid.Row="1" Content="Import CSV" Width="100" Height="40" Margin="20" x:Name="ImportPasswords_button" Click="ImportPasswords_button_Click"/>
+        <Grid Grid.Row="1">
+            
+            <Button Grid.Row="1" Content="Import CSV" Width="100" Height="40" Margin="20" x:Name="ImportPasswords_button" Click="ImportPasswords_button_Click"/>
+        </Grid>
+        
 
 
     </Grid>

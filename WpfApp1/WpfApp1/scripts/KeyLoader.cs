@@ -83,7 +83,7 @@ public static class KeyLoader
         return Convert.ToBase64String(ms.ToArray());
     }
 
-    private static byte[] DecryptToBytes(string base64Cipher, byte[] key)
+    public static byte[] DecryptToBytes(string base64Cipher, byte[] key)
     {
         byte[] fullCipher = Convert.FromBase64String(base64Cipher);
 

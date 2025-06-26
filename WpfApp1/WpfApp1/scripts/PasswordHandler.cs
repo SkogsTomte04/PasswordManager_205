@@ -51,5 +51,22 @@ namespace WpfApp1.scripts
             
             return ch;
         }
+        public static int EstimatePasswordStrength(string password)
+{
+            if (string.IsNullOrEmpty(password))
+            {
+                return 0;
+            }
+
+            int score = 0;
+
+            if (password.Length >= 8) score++;
+            if (password.Any(char.IsLower)) score++;
+            if (password.Any(char.IsUpper)) score++;
+            if (password.Any(char.IsDigit)) score++;
+            if (password.Any(ch => !char.IsLetterOrDigit(ch))) score++;
+
+            return score; // goes to 5
+}
     }
 }

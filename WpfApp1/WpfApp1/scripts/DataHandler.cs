@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -72,6 +73,8 @@ namespace WpfApp1.scripts
         {
             string query = "INSERT INTO Users (MasterUsername, MasterPasswordHash) VALUES (@Username, @PasswordHash)";
 
+            //check if user exists
+            
 
             using (SqlConnection conn = new SqlConnection(connStr))
             using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -156,6 +159,72 @@ namespace WpfApp1.scripts
             }
 
         }
+        public bool UserExists(string username)
+        {
+            SqlConnection conn = new SqlConnection(connStr);
+            string query = "SELECT COUNT(*) FROM Users WHERE Username = @Username";
+
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@Username", username);
+
+            int count = (int)cmd.ExecuteScalar();
+            return count > 0;
+        }
+
+        public void DeleteCredential(int userId, int credId)
+        {
+            string query = @"
+        DELETE FROM Credentials
+        WHERE UserId = @UserId AND Id = @CredentialId";
+            SqlConnection conn = new SqlConnection(connStr);
+            conn.Open();
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@UserId", userId);
+            cmd.Parameters.AddWithValue("@CredentialId", credId);
+
+            int rowsAffected = cmd.ExecuteNonQuery();
+            conn.Close();
+            if (rowsAffected == 0)
+            {
+                throw new Exception("No credential found with the given UserId and CredentialId.");
+            }
+            else
+            {
+                MessageBox.Show("Credential Deleted.");
+            }
+        }
+        public void UpdateCredential(
+            int userId, int credentialId,
+            string serviceName, string username, string email,
+            string encryptedPassword, string notes)
+                {
+                    using var conn = new SqlConnection(connStr);
+                    conn.Open();
+
+                    string query = @"
+                UPDATE Credentials
+                SET ServiceName = @ServiceName,
+                    Username = @Username,
+                    Email = @Email,
+                    EncryptedPassword = @EncryptedPassword,
+                    Notes = @Notes,
+                    DateUpdated = @DateUpdated
+                WHERE Id = @CredentialId AND UserId = @UserId;
+            ";
+
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@ServiceName", serviceName);
+            cmd.Parameters.AddWithValue("@Username", username);
+            cmd.Parameters.AddWithValue("@Email", email);
+            cmd.Parameters.AddWithValue("@EncryptedPassword", encryptedPassword);
+            cmd.Parameters.AddWithValue("@Notes", notes);
+            cmd.Parameters.AddWithValue("@DateUpdated", DateTime.Now);
+            cmd.Parameters.AddWithValue("@CredentialId", credentialId);
+            cmd.Parameters.AddWithValue("@UserId", userId);
+
+            cmd.ExecuteNonQuery();
+        }
+
         public List<Credential> GetCredentials(ActiveUser user)
         {
             var credentials = new List<Credential>();
@@ -225,7 +294,7 @@ namespace WpfApp1.scripts
                                     KeyLoader.FirstTimeSetup(user, pass);
                                 }
                                 conn.Close();
-                                ActiveUser activeUser = new ActiveUser(userID, user, pass);
+                                ActiveUser activeUser = new ActiveUser(userID, user, pass, masterPassHash);
                                 return activeUser;
                             }
                             else
